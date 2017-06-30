@@ -21,7 +21,7 @@ Route::get('loai-san-pham', [
 	'uses'=>'PageController@getProductType'
 ]);
 
-Route::get('chi-tiet-san-pham', [
+Route::get('chi-tiet-san-pham/{id}', [
 	'as'=>'chi-tiet-san-pham',
 	'uses'=>'PageController@getDetailProduct'
 ]);
