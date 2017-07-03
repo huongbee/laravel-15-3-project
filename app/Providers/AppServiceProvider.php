@@ -3,6 +3,10 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\TypeProduct;
+use View;
+use Session;
+use App\Cart;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -13,7 +17,18 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        $loaisanpham = TypeProduct::all();
+        View::share('loaisanpham',$loaisanpham);
+
+
+        View::composer('layout', function ($view) {
+            if(Session::has('cart')){
+                $oldCart = Session::get('cart');
+                $cart = new Cart($oldCart);
+                $view->with(['cart'=>Session::get('cart'),'product_cart'=>$cart->items,'totalPrice'=> $cart->totalPrice,'totalQty'=>$cart->totalQty]);
+            }
+            
+        });
     }
 
     /**

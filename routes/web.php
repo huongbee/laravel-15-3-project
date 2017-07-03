@@ -16,7 +16,7 @@ Route::get('/', [
 	'uses'=>'PageController@getIndex'
 ]);
 
-Route::get('loai-san-pham', [
+Route::get('loai-san-pham/{id}', [
 	'as'=>'loai-san-pham',
 	'uses'=>'PageController@getProductType'
 ]);
@@ -26,8 +26,17 @@ Route::get('chi-tiet-san-pham/{id}', [
 	'uses'=>'PageController@getDetailProduct'
 ]);
 
-Route::get('gio-hang', [
+Route::get('add-to-cart/{id}',[
 	'as'=>'gio-hang',
+	'uses'=>'PageController@getAddToCart'
+]);
+
+Route::get('unset',function(){
+	Session::forget('cart');
+});
+
+Route::get('dat-hang', [
+	'as'=>'dat-hang',
 	'uses'=>'PageController@getCart'
 ]);
 
