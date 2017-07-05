@@ -21,10 +21,11 @@ class AppServiceProvider extends ServiceProvider
         View::share('loaisanpham',$loaisanpham);
 
 
-        View::composer('layout', function ($view) {
+        View::composer(['layout','giohang'], function ($view) {
             if(Session::has('cart')){
                 $oldCart = Session::get('cart');
                 $cart = new Cart($oldCart);
+                //dd($cart);
                 $view->with(['cart'=>Session::get('cart'),'product_cart'=>$cart->items,'totalPrice'=> $cart->totalPrice,'totalQty'=>$cart->totalQty]);
             }
             

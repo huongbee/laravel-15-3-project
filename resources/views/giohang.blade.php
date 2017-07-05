@@ -71,27 +71,37 @@
 					</div>
 					<div class="col-sm-6">
 						<div class="your-order">
-							<div class="your-order-head"><h5>Your Order</h5></div>
+							<div class="your-order-head"><h5>Đơn hàng của bạn</h5></div>
 							<div class="your-order-body">
 								<div class="your-order-item">
 									<div>
 									<!--  one item	 -->
+									@foreach($product_cart as $product)
 										<div class="media">
-											<img width="35%" src="assets/dest/images/shoping1.jpg" alt="" class="pull-left">
+											<img width="35%" src="shopping/image/product/{{$product['item']->image}}" alt="" class="pull-left">
 											<div class="media-body">
-												<p class="font-large">Men's Belt</p>
-												<span class="color-gray your-order-info">Color: Red</span>
-												<span class="color-gray your-order-info">Size: M</span>
-												<span class="color-gray your-order-info">Qty: 1</span>
+												<p class="font-large" style="margin-bottom: 20px; color: blue; font-size: 20px; ">{{$product['item']->name}}</p>
+												
+												<span class="">Số lượng: 
+													<input class="btn btn-success btnGiam" type="button" value="-"  name="giam"  dataId ="{{$product['item']->id}}" soluong="{{$product['qty']}}" >
+													<input type="text" name="soluong" value="{{$product['qty']}}" style="width: 35px" id="soluong-{{$product['item']->id}}">
+													<input class="btn btn-success" type="button" value="+"  name="tang" class="btnTang">
+												</span>
+												<div>
+												<span class=""><b>Đơn giá: 
+													{{$product['qty']}}*{{$product['price']}}</b>
+												</span>
+												</div>
 											</div>
 										</div>
+									@endforeach
 									<!-- end one item -->
 									</div>
 									<div class="clearfix"></div>
 								</div>
 								<div class="your-order-item">
-									<div class="pull-left"><p class="your-order-f18">Total:</p></div>
-									<div class="pull-right"><h5 class="color-black">$235.00</h5></div>
+									<div class="pull-left"><p class="your-order-f18">Tổng tiền:</p></div>
+									<div class="pull-right"><h5 class="color-black">{{number_format($totalPrice)}} đồng</div>
 									<div class="clearfix"></div>
 								</div>
 							</div>
@@ -132,4 +142,14 @@
 			</form>
 		</div> <!-- #content -->
 	</div> <!-- .container -->
+<script src="shopping/assets/dest/js/jquery.js"></script>
+<script>
+	$(document).ready(function(){
+		$('.btnGiam').click(function(){
+			var idSP = $(this).attr('dataId')
+			var soluong = $(this).attr('soluong')
+			$('#soluong-'+idSP).val(soluong-1)
+		})
+	})
+</script>
 @endsection

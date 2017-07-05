@@ -44,8 +44,9 @@ class PageController extends Controller
             $cart = new Cart($oldCart);
             $cart->add($product,$id,1);
             $req->session()->put('cart', $cart);
-            // $a = Session::get('cart');
-            // dd($a);
+            $a = Session::get('cart');
+            //dd($a);
+            
             return redirect()->back()->with('succsess','Thêm thành công');
         }
         else{
@@ -53,9 +54,24 @@ class PageController extends Controller
         }
 
     }
+    public function getDelItemCart($id){
+        $oldCart = Session::has('cart')?Session::get('cart'):null;
+        $cart = new Cart($oldCart);
+        $cart->removeItem($id);
+        Session::put('cart',$cart);
+        return redirect()->back()->with('succsess','Xóa thành công');
+    }
+
+
 
     public function getCart(){
-    	return view('giohang');
+        if(Session::has('cart')){
+            return view('giohang');
+        }
+        else{
+            return redirect()->route('trangchu');
+        }
+    	
     }
 
     public function getLogin(){

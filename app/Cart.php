@@ -41,7 +41,9 @@ class Cart
 			$giohang['price'] = $item->promotion_price * $giohang['qty'];
 			$this->items[$id] = $giohang;
 			$this->totalQty = $this->totalQty + $qty;
-			$this->totalPrice += $item->promotion_price*$giohang['qty'];
+			//$this->totalPrice += $item->promotion_price*$giohang['qty'];
+			$this->totalPrice = ($this->totalPrice + $giohang['item']->promotion_price);
+			//dd($this->totalPrice) ;
 		//}
 		
 	}

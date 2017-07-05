@@ -31,6 +31,11 @@ Route::get('add-to-cart/{id}',[
 	'uses'=>'PageController@getAddToCart'
 ]);
 
+Route::get('xoa-item-gio-hang/{id}',[
+	'as'=>'del-item-cart',
+	'uses'=>'PageController@getDelItemCart'
+]);
+
 Route::get('unset',function(){
 	Session::forget('cart');
 });
