@@ -50,9 +50,9 @@ class Cart
 	//xóa 1
 	public function reduceByOne($id){ 
 		$this->items[$id]['qty']--;
-		$this->items[$id]['price'] -= $this->items[$id]['item']['price'];
+		$this->items[$id]['price'] -= $this->items[$id]['item']['promotion_price'];
 		$this->totalQty--;
-		$this->totalPrice -= $this->items[$id]['item']['price'];
+		$this->totalPrice = ($this->totalPrice - $this->items[$id]['item']['promotion_price']);
 		if($this->items[$id]['qty']<=0){
 			unset($this->items[$id]);
 		}
@@ -62,5 +62,15 @@ class Cart
 		$this->totalQty -= $this->items[$id]['qty'];
 		$this->totalPrice -= $this->items[$id]['price'];
 		unset($this->items[$id]);
+	}
+
+
+	//tăng 1
+	public function increByOne($id){ 
+		$this->items[$id]['qty']++;
+		$this->items[$id]['price'] += $this->items[$id]['item']['promotion_price'];
+		$this->totalQty++;
+		$this->totalPrice = ($this->totalPrice + $this->items[$id]['item']['promotion_price']);
+		
 	}
 }

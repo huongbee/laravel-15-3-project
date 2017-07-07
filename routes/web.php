@@ -36,6 +36,14 @@ Route::get('xoa-item-gio-hang/{id}',[
 	'uses'=>'PageController@getDelItemCart'
 ]);
 
+
+Route::get('reduce-incre-by-one',[
+	'as'=>'reduce-incre-by-one',
+	'uses'=>'PageController@getReduceIncreByOne'
+]);
+
+
+
 Route::get('unset',function(){
 	Session::forget('cart');
 });
@@ -44,6 +52,13 @@ Route::get('dat-hang', [
 	'as'=>'dat-hang',
 	'uses'=>'PageController@getCart'
 ]);
+
+
+Route::post('dat-hang',[
+	'as'=>'dat-hang',
+	'uses'=>'PageController@postCheckout'
+]);
+
 
 
 Route::get('login', [

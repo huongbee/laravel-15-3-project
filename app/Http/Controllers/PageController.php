@@ -9,6 +9,9 @@ use DB;
 use App\TypeProduct;
 use Session;
 use App\Cart;
+use App\Customer;
+use App\Bills;
+use App\BillDetail;
 
 class PageController extends Controller
 {
@@ -62,6 +65,22 @@ class PageController extends Controller
         return redirect()->back()->with('succsess','Xóa thành công');
     }
 
+    public function getReduceIncreByOne(Request $req){
+        $id = $req->id;
+        $oldCart = Session::has('cart')?Session::get('cart'):null;
+        $cart = new Cart($oldCart);
+        if($req->btn=='-'){
+            $cart->reduceByOne($id);
+        }
+        elseif($req->btn=='+'){
+            $cart->increByOne($id);
+        }
+        
+        Session::put('cart',$cart); 
+    
+    }
+
+
 
 
     public function getCart(){
@@ -73,6 +92,47 @@ class PageController extends Controller
         }
     	
     }
+
+
+    public function postCheckout(Request $req){
+        $customer = new Customer;
+        $customer->name = $req->name;
+        $customer->gender = $req->gender;
+        $customer->email = $req->email;
+        $customer->address = $req->address;
+        $customer->phone_number = $req->phone;
+        $customer->note = $req->notes;
+        $customer->save();
+        if($customer){
+            $bill = new Bills;
+            $bill->id_customer = $customer->id;
+            $bill->date_order = date('Y-m-d');
+
+            $cart = Session::get('cart');
+            $total = $cart->totalPrice;
+
+            $bill->total = $total;
+            $bill->payment = $req->payment_method;
+            $bill->save();
+            if($bill){
+                foreach($cart->items as $key => $item){
+                    $bill_detail = new BillDetail;
+                    $bill_detail->id_bill = $bill->id;
+                    $bill_detail->id_product = $item['item']->id;
+                    $bill_detail->quantity = $item['qty'];
+                    $bill_detail->unit_price = $item['price']/$item['qty'];
+                    $bill_detail->save();
+                }
+                
+                Session::forget('cart');
+                return redirect()->route('trangchu')->with('thanhcong','Đặt hàng thành công');
+            }
+
+        }
+    }
+
+
+
 
     public function getLogin(){
     	return view('login');
