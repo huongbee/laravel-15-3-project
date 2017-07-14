@@ -12,6 +12,8 @@ use App\Cart;
 use App\Customer;
 use App\Bills;
 use App\BillDetail;
+use App\User;
+use Hash;
 
 class PageController extends Controller
 {
@@ -135,7 +137,34 @@ class PageController extends Controller
     public function getRegister(){
         return view('register');
     }
-    
+
+    public function postRegister(Request $req){
+        $this->validate($req,
+            [
+                'email'=>'required|unique:users|email|min:10|max:100',
+                'fullname'=>'required|min:10|max:100',
+                'password'=>'required|min:6|max:20',
+                're_password'=>'required|same:password'
+            ],
+            [
+                'email.required'=>'Vui lòng nhập email',
+                'email.unique'=>'Email đã được sử dụng',
+                'email.min'=>'Email ít nhất 10 kí tự',
+                'email.max'=>'Email không quá 100 kí tự',
+                'fullname.required'=>'Vui lòng nhập tên',
+                're_password.same' =>'Mật khẩu không giống nhau'
+            ]
+        );
+        $user = new User;
+        $user->full_name = $req->fullname;
+        $user->email = $req->email;
+        $user->password = Hash::make($req->password);
+        $user->remember_token = csrf_token();
+        $user->save();
+        
+        return redirect()->back()->with('thanhcong','Đăng kí thành công');
+    }
+
 
     public function getLogin(){
     	return view('login');
