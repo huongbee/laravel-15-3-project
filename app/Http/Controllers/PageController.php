@@ -132,13 +132,14 @@ class PageController extends Controller
     }
 
 
-
+    public function getRegister(){
+        return view('register');
+    }
+    
 
     public function getLogin(){
     	return view('login');
     }
 
-    public function getRegister(){
-    	return view('register');
-    }
+    
 }

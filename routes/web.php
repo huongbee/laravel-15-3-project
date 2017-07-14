@@ -60,15 +60,16 @@ Route::post('dat-hang',[
 ]);
 
 
+Route::get('register', [
+	'as'=>'register',
+	'uses'=>'PageController@getRegister'
+]);
+
 
 Route::get('login', [
 	'as'=>'login',
 	'uses'=>'PageController@getLogin'
 ]);
 
-Route::get('register', [
-	'as'=>'register',
-	'uses'=>'PageController@getRegister'
-]);
 
 
