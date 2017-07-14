@@ -70,6 +70,11 @@ Route::post('register',[
 	'uses'=>'PageController@postRegister'
 ]);
 
+Route::get('active/{id}-{email}',[
+	'as'=>'active_account',
+	'uses'=>'PageController@getActiveAccount'
+]);
+
 
 
 Route::get('login', [

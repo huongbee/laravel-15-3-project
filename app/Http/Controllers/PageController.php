@@ -14,6 +14,7 @@ use App\Bills;
 use App\BillDetail;
 use App\User;
 use Hash;
+use Mail;
 
 class PageController extends Controller
 {
@@ -161,8 +162,32 @@ class PageController extends Controller
         $user->password = Hash::make($req->password);
         $user->remember_token = csrf_token();
         $user->save();
-        
+
+        Mail::send('noidung_guimail', ['user' => $user], function ($message) use ($req)
+        {
+            $message->from('huonghuong08.php@gmail.com', 'Username');
+            $message->to($req->email,$req->fullname);
+            $message->subject('Kích hoạt tài khoản');
+        });
+
+
         return redirect()->back()->with('thanhcong','Đăng kí thành công');
+    }
+
+
+
+    public function getActiveAccount($id,$email){
+        $user = User::where('id',$id)->first();
+        if($user){
+            $user->active = 1;
+            $user->save();
+            return view('active_acc',compact('user'));
+        }
+        else{
+
+            return view('active_acc',compact('user'));
+        }
+        
     }
 
 
