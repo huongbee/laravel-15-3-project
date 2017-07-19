@@ -15,6 +15,9 @@ use App\BillDetail;
 use App\User;
 use Hash;
 use Mail;
+use Auth;
+use Socialite;
+use App\SocialProvider;
 
 class PageController extends Controller
 {
@@ -193,6 +196,99 @@ class PageController extends Controller
 
     public function getLogin(){
     	return view('login');
+    }
+
+    public function postLogin(Request $req){
+        $this->validate($req,
+            [
+                "email"=>"required|email",
+                'password'=>'required|min:6|max:30'
+            ],
+            [
+                'email.required'=>'VUi lòng nhập email',
+                'email.email'=>'Email không đúng định dạng',
+                'password.required'=>"Vui lòng nhập mật khẩu",
+                'password.min'=>'Mật khẩu ít nhất 6 kí tự',
+                'password.max'=>'Mật khẩu không quá 30 kí tự'
+            ]
+        );
+        $arr = array(
+                    'email'=>$req->email,
+                    'password'=>$req->password
+                );
+
+        if(Auth::attempt($arr)){
+            return redirect()->route('trangchu');
+        }
+        else{
+            return redirect()->back()->with('thatbai','Đăng nhập không thành công');
+        }
+    }
+
+
+    public function getLogout(){
+        Auth::logout();
+        return redirect()->back();
+    }
+
+
+    public function getSearch(Request $req){
+        $products = Product::where('name','like',"%$req->keyword%")
+                        ->orWhere('unit_price','=',$req->keyword)
+                        ->orWhere('promotion_price','=',$req->keyword)
+                        ->get();
+        return view('search',compact('products'));
+    }
+
+
+
+    public function redirectToProvider($providers){
+        return Socialite::driver($providers)->redirect();
+    }
+
+
+
+
+    public function handleProviderCallback($providers){
+        try{
+            $socialUser = Socialite::driver($providers)->user();
+            //return $user->getEmail();
+        }
+        catch(\Exception $e){
+            //dd($e->getResponse()->getBody()->getContents());
+            return redirect()->route('login')->with(['flash_level'=>'danger','flash_message'=>"Đăng nhập không thành công"]);
+        }
+
+        $socialProvider = SocialProvider::where('provider_id',$socialUser->getId())
+                                        ->first();
+        if(!$socialProvider){
+            //tạo mới
+            $user = User::where('email',$socialUser->getEmail())->first();
+            if($user){
+              return redirect()->route('login')->with(['flash_level'=>'danger','flash_message'=>"Email đã có người sử dụng"]);
+            }
+            else{
+              $user = new User();
+              $user->email = $socialUser->getEmail();
+              $user->full_name = $socialUser->getName();
+              if($providers == 'google'){
+                $image = explode('?',$socialUser->getAvatar());
+                $user->avatar = $image[0];
+              }
+              $user->avatar = $socialUser->getAvatar();
+              $user->save();
+            }
+            $provider = new SocialProvider();
+            $provider->provider_id = $socialUser->getId();
+            $provider->provider = $providers;
+            $provider->email = $socialUser->getEmail();
+            $provider->save();
+        }
+        else{
+            $user = User::where('email',$socialUser->getEmail())->first();
+        }
+        Auth()->login($user);
+        return redirect()->route('trangchu')->with(['flash_level'=>'success','flash_message'=>"Đăng nhập thành công"]);
     }
 
     

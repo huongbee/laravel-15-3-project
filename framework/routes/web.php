@@ -82,5 +82,32 @@ Route::get('login', [
 	'uses'=>'PageController@getLogin'
 ]);
 
+Route::post('login', [
+	'as'=>'login',
+	'uses'=>'PageController@postLogin'
+]);
 
 
+Route::get('logout', [
+	'as'=>'logout',
+	'uses'=>'PageController@getLogout'
+]);
+
+
+Route::get('search',[
+	'as'=>'search',
+	'uses'=>'PageController@getSearch'
+]);
+
+
+
+Route::get('login/{provider}', [
+	'as'=>'provider_login',
+	'uses'=>'PageController@redirectToProvider'
+]);
+
+
+Route::get('login/{provider}/callback', [
+	'as'=>'provider_login_callback',
+	'uses'=>'PageController@handleProviderCallback'
+]);

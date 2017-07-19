@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Bills extends Model
 {
     protected $table = 'bills';
+    private $timestampts = false;
 
     public function Customer(){
     	return $this->belongsTo('App\Customer','id_customer','id');

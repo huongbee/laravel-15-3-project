@@ -17,34 +17,17 @@ class Cart
 	}
 
 	public function add($item, $id, $qty=1){
-		// if($item->promotion_price==$item->unit_price){
-		// 	$giohang = ['qty'=>0, 'price' => $item->unit_price, 'item' => $item];
-		// 	if($this->items){
-		// 		if(array_key_exists($id, $this->items)){
-		// 			$giohang = $this->items[$id];
-		// 		}
-		// 	}
-		// 	$giohang['qty'] = $giohang['qty'] + $qty;
-		// 	$giohang['price'] = $item->unit_price * $giohang['qty'];
-		// 	$this->items[$id] = $giohang;
-		// 	$this->totalQty = $this->totalQty + $qty;
-		// 	$this->totalPrice += $item->unit_price*$giohang['qty'];
-		// }
-		//else{
-			$giohang = ['qty'=>0, 'price' => $item->promotion_price, 'item' => $item];
-			if($this->items){
-				if(array_key_exists($id, $this->items)){
-					$giohang = $this->items[$id];
-				}
+		$giohang = ['qty'=>0, 'price' => $item->promotion_price, 'item' => $item];
+		if($this->items){
+			if(array_key_exists($id, $this->items)){
+				$giohang = $this->items[$id];
 			}
-			$giohang['qty'] = $giohang['qty'] + $qty;
-			$giohang['price'] = $item->promotion_price * $giohang['qty'];
-			$this->items[$id] = $giohang;
-			$this->totalQty = $this->totalQty + $qty;
-			//$this->totalPrice += $item->promotion_price*$giohang['qty'];
-			$this->totalPrice = ($this->totalPrice + $giohang['item']->promotion_price);
-			//dd($this->totalPrice) ;
-		//}
+		}
+		$giohang['qty'] = $giohang['qty'] + $qty;
+		$giohang['price'] = $item->promotion_price * $giohang['qty'];
+		$this->items[$id] = $giohang;
+		$this->totalQty = $this->totalQty + $qty;
+		$this->totalPrice = ($this->totalPrice + $giohang['item']->promotion_price);
 		
 	}
 	//xóa 1
