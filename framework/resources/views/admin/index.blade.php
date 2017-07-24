@@ -8,6 +8,16 @@
                   <div class="panel-heading"><b>Danh sách sản phẩm</b>
                   </div>
                   <div class="panel-body">
+                  @if(Session::has('error'))
+                    <div class="alert alert-danger">
+                      {{Session::get('error')}}
+                    </div>
+                  @endif
+                  @if(Session::has('success'))
+                    <div class="alert alert-success">
+                      {{Session::get('success')}}
+                    </div>
+                  @endif
                       <table class="table table-hover">
                         <thead>
                           <tr>
@@ -34,7 +44,14 @@
                                 @endforeach --}}
                             </td>
                             <td><input type="checkbox" @if($p->new==1) checked @endif ></td>
-                            <td><i class="fa fa-pencil-square-o fa-2x" aria-hidden="true" ></i> | <i class="fa fa-trash-o fa-2x" aria-hidden="true"></i></td>
+                            <td>
+                              <a href="{{route('admin.edit_product',$p->id)}}">
+                                <i class="fa fa-pencil-square-o fa-2x" aria-hidden="true" ></i>
+                              </a> | 
+                              <a href="{{route('admin.delete_product',$p->id)}}">
+                                <i class="fa fa-trash-o fa-2x" aria-hidden="true"></i>
+                              </a>
+                            </td>
                           </tr>
                         @endforeach
                         </tbody>

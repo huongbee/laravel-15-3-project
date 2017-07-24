@@ -5,7 +5,7 @@
         <div class="panel panel-body">
           <section class="content">
               <div class="panel panel-default">
-                  <div class="panel-heading"><b>Thêm sản phẩm mới</b>
+                  <div class="panel-heading"><b>Sửa thông tin sản phẩm {{$product->name}}</b>
                   </div>
                   <div class="panel-body">
 
@@ -23,36 +23,36 @@
                         {{Session::get('err_file')}}
                       </div>
                     @endif
-                     <form method="POST" enctype="multipart/form-data" action="{{route('admin.add_product')}}">
+                     <form method="POST" enctype="multipart/form-data" action="{{route('admin.edit_product',$product->id)}}">
                       {{csrf_field()}}
                       <div class="col-md-6">
                         <label>Tên sản phẩm</label>
-                        <input type="text" name="name" class="form-control" value="{{ old('name') }}">
+                        <input type="text" name="name" class="form-control" value="{{$product->name}}">
                       </div>
                       <div class="col-md-6">
                         <label>Chọn loại</label>
                           <select name="loai" class="form-control">
                             @foreach($type as $loai)
-                              <option value="{{$loai->id}}">{{$loai->name}}</option>
+                              <option value="{{$loai->id}}" @if($product->id_type==$loai->id) selected @endif>{{$loai->name}}</option>
                             @endforeach
                           </select>
                       </div>
                       <div class="col-md-6">
                         <label>Giá sản phẩm</label>
-                        <input type="text" name="price" class="form-control" value="{{ old('price') }}">
+                        <input type="text" name="price" class="form-control" value="{{$product->unit_price}}">
                       </div>
                       <div class="col-md-6">
                         <label>Giá Khuyến mãi</label>
-                        <input type="text" name="promotion" class="form-control" value="{{ old('promotion') }}">
+                        <input type="text" name="promotion" class="form-control" value="{{$product->promotion_price}}">
                       </div>
                       <div class="col-md-6">
                         <label>Đơn vị tính</label>
-                        <input type="text" name="unit" class="form-control">
+                        <input type="text" name="unit" class="form-control" value="{{$product->unit}}">
                       </div>
                       
                       <div class="col-md-12" style="padding: 10px 20px">
                         <label>
-                          <input type="checkbox" name="spmoi"> Sản phẩm mới
+                          <input type="checkbox" name="spmoi" @if($product->new==1) checked @endif > Sản phẩm mới
                         </label>
                       </div>
                       <div class="col-md-9">
@@ -62,7 +62,9 @@
                       </div>
                       <div class="col-md-12"  style="padding: 10px 20px">
                         <label>Mô tả
-                          <textarea class="form-control col-md-12" name="description" rows="5" id="content"></textarea>
+                          <textarea class="form-control col-md-12" name="description" rows="5" id="content">
+                            {{$product->description}}
+                          </textarea>
                           <script>
                             CKEDITOR.replace('content')
                           </script>

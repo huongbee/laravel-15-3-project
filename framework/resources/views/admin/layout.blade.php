@@ -305,7 +305,7 @@
                       </a>
                       <ul class="sub">
                           <li><a  href="{{route('admin.trangchu')}}">Danh sách sản phẩm</a></li>
-                          <li><a  href="chartjs.html">Thêm sản phẩm</a></li>
+                          <li><a  href="{{route('admin.add_product')}}">Thêm sản phẩm</a></li>
                       </ul>
                   </li>
                   <li class="sub-menu">

@@ -121,4 +121,25 @@ Route::group(['prefix'=>'administrator'], function(){
 		'as'=>'admin.add_product',
 		'uses'=>'AdminController@getAddProduct'
 	]);
+
+	Route::post('/add-product',[
+		'as'=>'admin.add_product',
+		'uses'=>'AdminController@postAddProduct'
+	]);
+
+	Route::get('/edit-product/{id}',[
+		'as'=>'admin.edit_product',
+		'uses'=>'AdminController@getEditProduct'
+	]);
+
+	Route::post('/edit-product/{id}',[
+		'as'=>'admin.edit_product',
+		'uses'=>'AdminController@postEditProduct'
+	]);
+
+
+	Route::get('/delete-product/{id}',[
+		'as'=>'admin.delete_product',
+		'uses'=>'AdminController@getDeleteProduct'
+	]);
 });
