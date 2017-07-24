@@ -111,3 +111,14 @@ Route::get('login/{provider}/callback', [
 	'as'=>'provider_login_callback',
 	'uses'=>'PageController@handleProviderCallback'
 ]);
+
+Route::group(['prefix'=>'administrator'], function(){
+	Route::get('/',[
+		'as'=>'admin.trangchu',
+		'uses'=>'AdminController@getIndex'
+	]);
+	Route::get('/add-product',[
+		'as'=>'admin.add_product',
+		'uses'=>'AdminController@getAddProduct'
+	]);
+});
