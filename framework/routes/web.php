@@ -143,3 +143,20 @@ Route::group(['prefix'=>'administrator'], function(){
 		'uses'=>'AdminController@getDeleteProduct'
 	]);
 });
+
+
+Route::get('import',[
+	'as'=>'import',
+	'uses'=>'PageController@getImportExcel'
+]);
+
+Route::post('import',[
+	'as'=>'import',
+	'uses'=>'PageController@postImportExcel'
+]);
+
+
+Route::post('export',[
+	'as'=>'export',
+	'uses'=>'PageController@postExportExcel'
+]);

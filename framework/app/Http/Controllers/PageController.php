@@ -18,6 +18,9 @@ use Mail;
 use Auth;
 use Socialite;
 use App\SocialProvider;
+use Maatwebsite\Excel\Facades\Excel;
+use Input;
+use App\Excels; //model
 
 class PageController extends Controller
 {
@@ -291,5 +294,67 @@ class PageController extends Controller
         return redirect()->route('trangchu')->with(['flash_level'=>'success','flash_message'=>"Đăng nhập thành công"]);
     }
 
-    
+
+
+    public function getImportExcel(){
+        return view('excel.import');
+    }
+
+    public function postImportExcel(Request $req){
+        if($req->hasFile('file')){
+            $file = $req->file('file');
+            $excel = [];
+            Excel::load($file, function ($reader) use (&$excel){
+                $objExcel = $reader->getExcel();
+                $sheet = $objExcel->getSheetByName("TKB"); //getSheet(0)
+
+                $highestRow = $sheet->getHighestRow(); //28
+                $highestColumn = $sheet->getHighestColumn(); //H
+
+                for ($row = 2; $row <= $highestRow; $row++)
+                {
+                    //  Read a row of data into an array
+                    $rowData = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row,
+                        NULL, TRUE, FALSE);
+
+                    //dd($rowData);
+                    $excel[] = $rowData[0];
+                }
+                
+                // lưu vào db
+                foreach ($excel as $value) {
+                    $row = new Excels;//model
+
+                    $row->lop = $value[0];
+                    $row->ten_mon = $value[1];
+                    $row->thu = $value[2];
+                    $row->tiet_bd = $value[3];
+                    $row->so_tiet = $value[4];
+                    $row->tuan_hoc = $value[5];
+                    $row->phong = $value[6];
+                    $row->save();
+                }
+                echo 'thành công';
+
+
+            }); 
+        }
+    }
+
+
+
+    public function postExportExcel(){
+        $export = Excels::select('lop','ten_mon','thu','tiet_bd','so_tiet','tuan_hoc','phong')->get();
+
+
+        return Excel::create('demo_export', function($excel) use ($export) {
+            $excel->sheet('huong', function($sheet) use ($export)
+            {
+                $sheet->fromArray($export, null, 'A1', false, false);
+                $headings = array('Lớp', 'Tên môn học', 'Thứ', 'Tiết bắt đầu','Số Tiết', 'Tuần học thực tế', 'Phòng học');
+                $sheet->prependRow(1, $headings);//1:row1:vị trí của heading
+            });
+        })->download('xlsx');
+        echo 'thành công';
+    }
 }
