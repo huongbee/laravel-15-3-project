@@ -221,6 +221,9 @@ class PageController extends Controller
                 );
 
         if(Auth::attempt($arr)){
+            if(Auth::user()->admin == 1){
+                return redirect()->route('admin.trangchu')->with(['flash_level'=>'success','flash_message'=>"Đăng nhập thành công"]);
+            }
             return redirect()->route('trangchu');
         }
         else{
@@ -231,7 +234,7 @@ class PageController extends Controller
 
     public function getLogout(){
         Auth::logout();
-        return redirect()->back();
+        return redirect()->route('trangchu');
     }
 
 
@@ -291,6 +294,9 @@ class PageController extends Controller
             $user = User::where('email',$socialUser->getEmail())->first();
         }
         Auth()->login($user);
+        if(Auth::user()->admin == 1){
+            return redirect()->route('admin.trangchu')->with(['flash_level'=>'success','flash_message'=>"Đăng nhập thành công"]);
+        }
         return redirect()->route('trangchu')->with(['flash_level'=>'success','flash_message'=>"Đăng nhập thành công"]);
     }
 

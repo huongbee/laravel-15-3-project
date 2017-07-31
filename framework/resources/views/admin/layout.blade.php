@@ -267,8 +267,8 @@
                 <!-- user login dropdown start-->
                 <li class="dropdown">
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                        <img alt="" src="admin_theme/img/avatar1_small.jpg">
-                        <span class="username">Jhon Doue</span>
+                        <img alt="" src="{{Auth::user()->avatar}}" width="20px">
+                        <span class="username">{{Auth::user()->full_name}}</span>
                         <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu extended logout">
@@ -276,7 +276,7 @@
                         <li><a href="#"><i class=" fa fa-suitcase"></i>Profile</a></li>
                         <li><a href="#"><i class="fa fa-cog"></i> Settings</a></li>
                         <li><a href="#"><i class="fa fa-bell-o"></i> Notification</a></li>
-                        <li><a href="login.html"><i class="fa fa-key"></i> Log Out</a></li>
+                        <li><a href="{{route('logout')}}"><i class="fa fa-key"></i> Log Out</a></li>
                     </ul>
                 </li>
                 <!-- user login dropdown end -->
@@ -314,10 +314,19 @@
                           <span>Loại sản phẩm</span>
                       </a>
                       <ul class="sub">
-                          <li><a  href="product_list.html">Danh sách loại</a></li>
-                          <li><a  href="product_details.html">Thêm loại mới</a></li>
+                          <li><a  href="{{route('admin.type-product')}}">Danh sách loại</a></li>
+                          <li><a  href="{{route('admin.add-type-product')}}">Thêm loại mới</a></li>
                       </ul>
                   </li>
+                  
+                  <li class="sub-menu">
+                      <a href="javascript:;" >
+                          <i class="fa fa-user"></i>
+                          <span>Danh sách Users</span>
+                      </a>
+                      
+                  </li>
+
                   <li>
                       <a href="google_maps.html" >
                           <i class="fa fa-map-marker"></i>

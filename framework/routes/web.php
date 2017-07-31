@@ -112,7 +112,7 @@ Route::get('login/{provider}/callback', [
 	'uses'=>'PageController@handleProviderCallback'
 ]);
 
-Route::group(['prefix'=>'administrator'], function(){
+Route::group(['prefix'=>'administrator','middleware'=>'checkAdminLogin'], function(){
 	Route::get('/',[
 		'as'=>'admin.trangchu',
 		'uses'=>'AdminController@getIndex'
@@ -142,6 +142,54 @@ Route::group(['prefix'=>'administrator'], function(){
 		'as'=>'admin.delete_product',
 		'uses'=>'AdminController@getDeleteProduct'
 	]);
+
+	Route::get('type-product',[
+		'as'=>'admin.type-product',
+		'uses'=>'AdminController@getListTypeProduct'
+	]);
+
+
+	Route::get('add-type-product',[
+		'as'=>'admin.add-type-product',
+		'uses'=>'AdminController@getAddTypeProduct'
+	]);
+	Route::post('add-type-product',[
+		'as'=>'admin.add-type-product',
+		'uses'=>'AdminController@postAddTypeProduct'
+	]);
+
+
+	Route::get('/edit-type-product/{id}',[
+		'as'=>'admin.edit_type_product',
+		'uses'=>'AdminController@getEditTypeProduct'
+	]);
+
+	Route::post('/edit-type-product/{id}',[
+		'as'=>'admin.edit_type_product',
+		'uses'=>'AdminController@postEditTypeProduct'
+	]);
+
+	Route::get('/delete-type-product/{id}',[
+		'as'=>'admin.delete_type_product',
+		'uses'=>'AdminController@getDeleteTypeProduct'
+	]);
+
+
+	Route::get('list-user',[
+		'as'=>'ds_user',
+		'uses'=>'AdminController@getListUser'
+	]);
+
+	Route::get('edit-user',[
+		'as'=>'edit_user',
+		'uses'=>'AdminController@getEditUser'
+	]);
+
+	Route::get('delete-user/{id}',[
+		'as'=>'delete_user',
+		'uses'=>'AdminController@getDeleteUser'
+	]);
+
 });
 
 
